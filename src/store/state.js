@@ -4,6 +4,9 @@ export default {
   serverURI: 'http://10.110.1.136:8080',
   user: null,
   token: null,
+  leds: [],
+  d_os: [],
+  d_is: [],
   userInfo: {
     messages: [
       {
@@ -50,6 +53,6 @@ export default {
         readAt: null
       }
     ],
-    tasks: []
+    tasks: [],
   }
 }

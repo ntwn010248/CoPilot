@@ -3,7 +3,8 @@
   <section class="content">
     <!-- GitHub hint -->
     <div class="row">
-      <div class="col-xs-12">
+      <h1>LEDS:</h1>
+      <!-- <div class="col-xs-12">
         <alert :dismissible="true"
                type="success"
                :iconClasses="['fa', 'fa-check']"
@@ -13,44 +14,32 @@
             <i class="fa fa-github fa-2x"></i>
           </a>
         </alert>
-      </div>
+      </div> -->
 
       <!-- Info boxes -->
-      <div class="col-md-3 col-sm-6 col-xs-12">
-        <info-box color-class="bg-aqua"
-                  :icon-classes="['ion', 'ion-ios-gear-outline']"
-                  text="CPU Traffic"
-                  number="90%"></info-box>
-      </div>
-      <!-- /.col -->
-      <div class="col-md-3 col-sm-6 col-xs-12">
-        <info-box color-class="bg-red"
-                  :icon-classes="['fa', 'fa-google-plus']"
-                  text="Likes"
-                  number="41,410"></info-box>
-      </div>
-      <!-- /.col -->
 
       <!-- fix for small devices only -->
       <div class="clearfix visible-sm-block"></div>
-      
-      <div class="col-md-3 col-sm-6 col-xs-12">
-        <info-box color-class="bg-green"
-                  :icon-classes="['ion', 'ion-ios-cart-outline']"
-                  text="Sales"
-                  number="760"></info-box>
-      </div>
+
       <!-- /.col -->
-      <div class="col-md-3 col-sm-6 col-xs-12">
-        <info-box color-class="bg-yellow"
-                  :icon-classes="['ion', 'ion-ios-people-outline']"
-                  text="New Members"
-                  number="2,000"></info-box>
+      <div class="col-md-4 col-sm-6 col-xs-12" v-for="led in leds" :key="led.id">
+        <info-box color-class="bg-green"
+                  :icon-classes="['ion', 'ion-ios-sunny-outline']"
+                  :text="'LED'+ led.id"
+                  :number="led.brightness"
+                  v-if="led.brightness==='1'"
+                  @toggleBrightness="toggleBrightness"></info-box>
+        <info-box color-class="bg-gray"
+                  :icon-classes="['ion', 'ion-ios-sunny-outline']"
+                  :text="'LED'+ led.id"
+                  :number="led.brightness"
+                  v-else
+                  @toggleBrightness="toggleBrightness"></info-box>
       </div>
       <!-- /.col -->
     </div>
-    <!-- /.row -->
-
+    <!-- /.row  CHARTS-->
+<!-- 
     <div class="col-xs-12">
       <div class="box">
         <div class="box-header with-border">
@@ -75,45 +64,39 @@
           <small><b>Pro Tip</b> Don't forget to star us on github!</small>
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- /.row -->
 
     <!-- Main row -->
     <div class="row">
-      <div class="col-md-3 col-sm-6 col-xs-12">
-        <process-info-box color-class="bg-yellow"
-                          :icon-classes="['ion', 'ion-ios-pricetag-outline']"
-                          text="Inventory"
-                          number="5,200"
-                          :progress="50"
-                          description="50% increase since May"></process-info-box>
+      <h1>Digital I/O</h1>
+      <div class="col-md-3 col-sm-6 col-xs-12" v-for="d_o in d_os" :key="d_o.id">
+        <info-box color-class="bg-green"
+                  :icon-classes="['ion', 'ion-ios-sunny-outline']"
+                  :text="'DigitalOutput'+ d_o.id"
+                  :number="d_o.value"
+                  v-if="d_o.value==='1'"
+                  @toggleValue="toggleValue"></info-box>
+        <info-box color-class="bg-gray"
+                  :icon-classes="['ion', 'ion-ios-sunny-outline']"
+                  :text="'DigitalOutput'+ d_o.id"
+                  :number="d_o.value"
+                  v-else
+                  @toggleValue="toggleValue"></info-box>
       </div>
-      <!-- /.col -->
-      <div class="col-md-3 col-sm-6 col-xs-12">
-        <process-info-box color-class="bg-green"
-                          :icon-classes="['ion', 'ion-ios-heart-outline']"
-                          text="Mentions"
-                          number="92,050"
-                          :progress="20"
-                          description="20% increase in 30 days"></process-info-box>
-      </div>
-      <!-- /.col -->
-      <div class="col-md-3 col-sm-6 col-xs-12">
-        <process-info-box color-class="bg-red"
-                          :icon-classes="['ion', 'ion-ios-cloud-download-outline']"
-                          text="Downloads"
-                          number="114,381"
-                          :progress="70"
-                          description="70% increase since yesterday"></process-info-box>
-      </div>
-      <!-- /.col -->
-      <div class="col-md-3 col-sm-6 col-xs-12">
-        <process-info-box color-class="bg-aqua"
-                          :icon-classes="['ion', 'ion-ios-chatbubble-outline']"
-                          text="Direct Messages"
-                          number="163,921"
-                          :progress="40"
-                          description="40% increase compared to last year"></process-info-box>
+      <div class="col-md-3 col-sm-6 col-xs-12" v-for="d_i in d_is" :key="d_i.id">
+        <info-box color-class="bg-green"
+                  :icon-classes="['ion', 'ion-ios-sunny-outline']"
+                  :text="'DigitalOutput'+ d_i.id"
+                  :number="d_i.value"
+                  v-if="d_i.value==='1'"
+                  ></info-box>
+        <info-box color-class="bg-gray"
+                  :icon-classes="['ion', 'ion-ios-sunny-outline']"
+                  :text="'DigitalOutput'+ d_i.id"
+                  :number="d_i.value"
+                  v-else
+                  ></info-box>
       </div>
       <!-- /.col -->
     </div>
@@ -155,9 +138,32 @@ export default {
     },
     isMobile () {
       return (window.innerWidth <= 800 && window.innerHeight <= 600)
+    },
+    leds () {
+      // console.log(this.$store.state.leds)
+      return this.$store.state.leds
+    },
+    d_os () {
+      // console.log(this.$store.state.leds)
+      return this.$store.state.d_os
+    },
+    d_is () {
+      return this.$store.state.d_is
+    }
+  },
+  methods: {
+    toggleBrightness(event) {
+      this.$store.dispatch('toggleLED', event)
+      // console.log(event)
+    },
+    toggleValue(event) {
+      this.$store.dispatch('toggleDO', event)
+      // console.log(event)
     }
   },
   mounted () {
+    console.log('ACTION: INIT ALL STATE')
+    this.$store.dispatch('init_all_state')
     this.$nextTick(() => {
       var ctx = document.getElementById('trafficBar').getContext('2d')
       var config = {
